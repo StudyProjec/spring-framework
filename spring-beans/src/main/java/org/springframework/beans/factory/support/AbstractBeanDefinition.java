@@ -142,13 +142,16 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	private volatile Object beanClass;
 
 	@Nullable
+	// bean 的作用范围
 	private String scope = SCOPE_DEFAULT;
 
 	private boolean abstractFlag = false;
 
 	@Nullable
+	// 是否懒加载
 	private Boolean lazyInit;
 
+	// 自动注入类型
 	private int autowireMode = AUTOWIRE_NO;
 
 	private int dependencyCheck = DEPENDENCY_CHECK_NONE;
@@ -158,6 +161,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	private boolean autowireCandidate = true;
 
+	// 自动装配时出现多个匹配时，作为首选
 	private boolean primary = false;
 
 	private final Map<String, AutowireCandidateQualifier> qualifiers = new LinkedHashMap<>();
@@ -190,8 +194,10 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	@Nullable
 	private String destroyMethodName;
 
+	// 是否执行init-method
 	private boolean enforceInitMethod = true;
 
+	// 是否知晓destroy-method
 	private boolean enforceDestroyMethod = true;
 
 	private boolean synthetic = false;

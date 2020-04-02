@@ -87,9 +87,9 @@ dependencies {
 task junit(type: Test) {
 	description = "Runs JUnit 4 and JUnit Jupiter tests."
 	systemProperty("testGroups", project.properties.get("testGroups"))
-	useJUnitPlatform {
-		excludeTags "failing-test-case"
-	}
+	// useJUnitPlatform {
+		// excludeTags "failing-test-case"
+	// }
 	include(["**/*Tests.class", "**/*Test.class"])
 	exclude(["**/testng/**/*.*"])
 	// Java Util Logging for the JUnit Platform.
