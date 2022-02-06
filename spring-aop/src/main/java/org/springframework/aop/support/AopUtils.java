@@ -308,6 +308,7 @@ public abstract class AopUtils {
 		}
 		List<Advisor> eligibleAdvisors = new ArrayList<>();
 		for (Advisor candidate : candidateAdvisors) {
+			// 筛选 IntroductionAdvisor 类型的通知器
 			if (candidate instanceof IntroductionAdvisor && canApply(candidate, clazz)) {
 				eligibleAdvisors.add(candidate);
 			}
@@ -318,6 +319,7 @@ public abstract class AopUtils {
 				// already processed
 				continue;
 			}
+			// 筛选普通类型的通知器
 			if (canApply(candidate, clazz, hasIntroductions)) {
 				eligibleAdvisors.add(candidate);
 			}

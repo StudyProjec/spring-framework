@@ -242,6 +242,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	protected <T> T doGetBean(final String name, @Nullable final Class<T> requiredType,
 			@Nullable final Object[] args, boolean typeCheckOnly) throws BeansException {
 
+		if (name.equals("testBean")) {
+			System.out.println(1);
+		}
+
 		// 返回 bean 名称，剥离工厂引用前缀即"&"。
 		// 如果 name 是 alias ，则获取对应映射的 beanName 。
 		// <1>

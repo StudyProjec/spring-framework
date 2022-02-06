@@ -171,9 +171,9 @@ public abstract class AbstractRefreshableWebApplicationContext extends AbstractR
 		beanFactory.ignoreDependencyInterface(ServletContextAware.class);
 		beanFactory.ignoreDependencyInterface(ServletConfigAware.class);
 
-		// 注册 webapplication 的作用域
+		// 注册 webapplication 的作用域，比如 "request" , "session" , "globalSession" , "application"
 		WebApplicationContextUtils.registerWebApplicationScopes(beanFactory, this.servletContext);
-		// 注册环境变量单例bean
+		// 注册环境变量单例bean，以便WebApplicationContext 可以使用它们。如："contextParameters", "contextAttributes"
 		WebApplicationContextUtils.registerEnvironmentBeans(beanFactory, this.servletContext, this.servletConfig);
 	}
 

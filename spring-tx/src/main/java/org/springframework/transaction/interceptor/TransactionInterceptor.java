@@ -90,12 +90,11 @@ public class TransactionInterceptor extends TransactionAspectSupport implements 
 	@Override
 	@Nullable
 	public Object invoke(MethodInvocation invocation) throws Throwable {
-		// Work out the target class: may be {@code null}.
-		// The TransactionAttributeSource should be passed the target class
-		// as well as the method, which may be from an interface.
+		// 获取目标类
 		Class<?> targetClass = (invocation.getThis() != null ? AopUtils.getTargetClass(invocation.getThis()) : null);
 
-		// Adapt to TransactionAspectSupport's invokeWithinTransaction...
+		// invocation::proceed 代表执行拦截器链的下一个拦截器
+		// invokeWithinTransaction 是父类 TransactionAspectSupport 中的一个模板方法
 		return invokeWithinTransaction(invocation.getMethod(), targetClass, invocation::proceed);
 	}
 

@@ -51,21 +51,26 @@ public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializ
 	public List<Object> getInterceptorsAndDynamicInterceptionAdvice(
 			Advised config, Method method, @Nullable Class<?> targetClass) {
 
-		// This is somewhat tricky... We have to process introductions first,
-		// but we need to preserve order in the ultimate list.
+		// 返回 DefaultAdvisorAdapterRegistry
 		AdvisorAdapterRegistry registry = GlobalAdvisorAdapterRegistry.getInstance();
+		// 获取之前解析得到的 advisors
+		// 从我执行的单测来看也就是
+		// ExposeInvocationInterceptor.ADVISOR 和 DefaultBeanFactoryPointcutAdvisor
 		Advisor[] advisors = config.getAdvisors();
 		List<Object> interceptorList = new ArrayList<>(advisors.length);
 		Class<?> actualClass = (targetClass != null ? targetClass : method.getDeclaringClass());
 		Boolean hasIntroductions = null;
 
 		for (Advisor advisor : advisors) {
+			// spring 的切面
 			if (advisor instanceof PointcutAdvisor) {
 				// Add it conditionally.
 				PointcutAdvisor pointcutAdvisor = (PointcutAdvisor) advisor;
+				// 是否匹配当前类
 				if (config.isPreFiltered() || pointcutAdvisor.getPointcut().getClassFilter().matches(actualClass)) {
 					MethodMatcher mm = pointcutAdvisor.getPointcut().getMethodMatcher();
 					boolean match;
+					// 是否匹配当前方法
 					if (mm instanceof IntroductionAwareMethodMatcher) {
 						if (hasIntroductions == null) {
 							hasIntroductions = hasMatchingIntroductions(advisors, actualClass);
@@ -90,8 +95,10 @@ public class DefaultAdvisorChainFactory implements AdvisorChainFactory, Serializ
 					}
 				}
 			}
+			// spring 的引入增强
 			else if (advisor instanceof IntroductionAdvisor) {
 				IntroductionAdvisor ia = (IntroductionAdvisor) advisor;
+				// IntroductionAdvisor 类型的通知器，仅需进行类级别的匹配即可
 				if (config.isPreFiltered() || ia.getClassFilter().matches(actualClass)) {
 					Interceptor[] interceptors = registry.getInterceptors(advisor);
 					interceptorList.addAll(Arrays.asList(interceptors));

@@ -48,6 +48,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 
 	@Override
 	public AopProxy createAopProxy(AdvisedSupport config) throws AopConfigException {
+		//默认false(代码注释来看是代理优化) || (proxy-target-class=true) || (没有接口)
 		if (config.isOptimize() || config.isProxyTargetClass() || hasNoUserSuppliedProxyInterfaces(config)) {
 			Class<?> targetClass = config.getTargetClass();
 			if (targetClass == null) {
@@ -59,6 +60,7 @@ public class DefaultAopProxyFactory implements AopProxyFactory, Serializable {
 			}
 			return new ObjenesisCglibAopProxy(config);
 		}
+		// 根据我运行的单测来看会返回jdk代理，而不是cglib代理
 		else {
 			return new JdkDynamicAopProxy(config);
 		}

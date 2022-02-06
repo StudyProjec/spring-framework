@@ -66,10 +66,12 @@ public class BeanFactoryAdvisorRetrievalHelper {
 	 */
 	public List<Advisor> findAdvisorBeans() {
 		// Determine list of advisor bean names, if not cached already.
+		// 从缓存中获取容器中所有 Advisor bean 的名称
 		String[] advisorNames = this.cachedAdvisorBeanNames;
 		if (advisorNames == null) {
 			// Do not initialize FactoryBeans here: We need to leave all regular beans
 			// uninitialized to let the auto-proxy creator apply to them!
+			// 缓存为空，尝试从容器以及其父容器分析得到所有 Advisor bean 的名称
 			advisorNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
 					this.beanFactory, Advisor.class, true, false);
 			this.cachedAdvisorBeanNames = advisorNames;
@@ -82,12 +84,15 @@ public class BeanFactoryAdvisorRetrievalHelper {
 		for (String name : advisorNames) {
 			if (isEligibleBean(name)) {
 				if (this.beanFactory.isCurrentlyInCreation(name)) {
+					// 创建中的 bean 被忽略
 					if (logger.isTraceEnabled()) {
 						logger.trace("Skipping currently created advisor '" + name + "'");
 					}
 				}
 				else {
 					try {
+						// 调用 getBean 方法从容器中获取名称为 name 的 bean，
+                     	// 并将 bean 添加到 advisors 中
 						advisors.add(this.beanFactory.getBean(name, Advisor.class));
 					}
 					catch (BeanCreationException ex) {

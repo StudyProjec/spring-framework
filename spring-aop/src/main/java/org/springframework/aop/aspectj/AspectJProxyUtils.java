@@ -49,11 +49,13 @@ public abstract class AspectJProxyUtils {
 			for (Advisor advisor : advisors) {
 				// Be careful not to get the Advice without a guard, as this might eagerly
 				// instantiate a non-singleton AspectJ aspect...
+				// 检测是否有AspectJ 类型的 Advisor 或 Advice
 				if (isAspectJAdvice(advisor)) {
 					foundAspectJAdvice = true;
 					break;
 				}
 			}
+			// 添加 DefaultPointcutAdvisor
 			if (foundAspectJAdvice && !advisors.contains(ExposeInvocationInterceptor.ADVISOR)) {
 				advisors.add(0, ExposeInvocationInterceptor.ADVISOR);
 				return true;
